@@ -1,0 +1,14 @@
+<!-- фрагмент можно переиспользовать по имени menu -->
+<!-- необходимо передать список у элементов которого есть свойства name и url
+(в списке не обязательно должны быть жанры) -->
+<nav th:fragment="menu(users)">
+    <a th:each="user : ${users}"
+       th:text="${user.username}"
+       th:href="@{/user/{userId}(userId=${customUser.id})}"></a>
+</nav>
+
+
+<!-- фрагмент можно переиспользовать по имени footer -->
+<footer th:fragment="footer">
+    Подвал Сайта
+</footer>
