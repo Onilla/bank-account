@@ -4,6 +4,8 @@ import com.testproject.userservice.DTO.CustomUserDTO;
 import com.testproject.userservice.entity.CustomUser;
 import com.testproject.userservice.exception.CustomUserException;
 import com.testproject.userservice.service.CustomUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
-@Validated
+import java.util.UUID;
+
+
 @RequestMapping("/user")
 @RestController
+@Tag(name = "CustomUserController", description = "Этот контроллер служит для работы с сущностью - пользователь ")
+
 public class CustomUserController {
+
+    // добавить контроллер на мультипарт файл чтобы была аватарка
 
     private final CustomUserService customUserService;
 
@@ -27,13 +35,14 @@ public class CustomUserController {
     }
 
     @GetMapping
-    public List<CustomUser> getAllUsers() { // Iterable?
+    @Operation(summary = "Позволяет получить список всех пользователей")
+    public List<CustomUser> getAllUsers() { // Iterable? нет ошибки канкарент ??
         return customUserService.getAllUsers();
     }
 
-
+    @Operation(summary = "Позволяет получить пользователя по id")
     @GetMapping("/{userId}")
-    public CustomUser getUserById(@PathVariable long userId) {
+    public CustomUser getUserById(@PathVariable UUID userId) {
         try {
             CustomUser user = customUserService.getUserById(userId);
             return user;
@@ -42,25 +51,29 @@ public class CustomUserController {
         }
     }
 
+
+    @Operation(summary = "Позволяет добавить пользователя")
     @PostMapping("/add") // 201 Created header Location
     public ResponseEntity<Void> addUser(@RequestBody @Valid CustomUserDTO customUserDTO) {
         // ResponseEntity для изменения статуса ответа
         // Если у RequestBody параметр required на false,
-        // передача параметра genre будет не обязательна, по умолчанию true, не передать будет ошибка
+        // передача параметра будет не обязательна, по умолчанию true, не передать будет ошибка
         try {
-            long userId = customUserService.saveNewUser(CustomUser.builder()
+            UUID clientId = customUserService.saveNewUser(CustomUser.builder()
                             .username(customUserDTO.getUsername())
+                            .surname(customUserDTO.getSurname())
                             .email(customUserDTO.getEmail())
                     .build());
-            URI location = URI.create("https://localhost:8080/user/" + userId);
+            URI location = URI.create("https://localhost:8080/user/" + clientId);
             return ResponseEntity.created(location).build();
         } catch (CustomUserException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 
         }
     }
+    @Operation(summary = "Позволяет удалить пользователя")
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
         try {
             customUserService.deleteUser(userId);
             // ответ - 204, тело - пустое

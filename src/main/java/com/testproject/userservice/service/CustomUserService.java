@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.UUID;
+
 @Validated
 @Service
 public class CustomUserService {
@@ -23,23 +25,23 @@ public class CustomUserService {
         return customUserRepository.findAll();
     }
 
-    public CustomUser getUserById(Long id) throws CustomUserException {
+    public CustomUser getUserById(UUID id) throws CustomUserException {
         return customUserRepository.findById(id)
                 .orElseThrow(() -> new CustomUserException("Пользователь с id = " +
                         id + "не найден"));
     }
 
-    public long saveNewUser(@Valid CustomUser customUser) throws CustomUserException {
-        if (customUserRepository.existsById(customUser.getId())) {
-            throw new CustomUserException("Пользователь с id: " + customUser.getId() + " уже существует");
-        }
+    public UUID saveNewUser(@Valid CustomUser customUser) throws CustomUserException {
+//        if (customUserRepository.existsByEmail(customUser.getEmail())) {
+//            throw new CustomUserException("Пользователь с email: " + customUser.getEmail() + " уже существует");
+//        }
         return customUserRepository.save(customUser).getId();
     }
 
-    public void deleteUser(Long id) throws CustomUserException {
-            if (!customUserRepository.existsById(id)) {
-                throw new CustomUserException("Пользователя с id " + id + " не существует");
+    public void deleteUser(UUID clientId) throws CustomUserException {
+            if (!customUserRepository.existsById(clientId)) {
+                throw new CustomUserException("Пользователя с id " + clientId + " не существует");
             }
-            customUserRepository.deleteById(id);
+            customUserRepository.deleteById(clientId);
         }
     }
