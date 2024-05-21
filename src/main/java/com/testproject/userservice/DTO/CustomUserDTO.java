@@ -13,8 +13,9 @@ import java.util.UUID;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomUserDTO {
-//    UUID id;
+    //    UUID id;
     String username;
     String surname;
     String email;
+
 }

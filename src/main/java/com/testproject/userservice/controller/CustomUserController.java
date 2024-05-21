@@ -8,13 +8,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -53,24 +56,30 @@ public class CustomUserController {
 
 
     @Operation(summary = "Позволяет добавить пользователя")
-    @PostMapping("/add") // 201 Created header Location
-    public ResponseEntity<Void> addUser(@RequestBody @Valid CustomUserDTO customUserDTO) {
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // 201 Created header Location
+    public ResponseEntity<Void> createUser(@RequestBody @Valid CustomUserDTO customUserDTO,
+                                           @RequestPart(value = "avatarFile", required = false) MultipartFile avatarFile) {
         // ResponseEntity для изменения статуса ответа
         // Если у RequestBody параметр required на false,
         // передача параметра будет не обязательна, по умолчанию true, не передать будет ошибка
         try {
-            UUID clientId = customUserService.saveNewUser(CustomUser.builder()
-                            .username(customUserDTO.getUsername())
-                            .surname(customUserDTO.getSurname())
-                            .email(customUserDTO.getEmail())
-                    .build());
+            byte[] avatarBytes = avatarFile.getBytes();
+            UUID clientId = customUserService.createNewUser(CustomUser.builder()
+                    .username(customUserDTO.getUsername())
+                    .surname(customUserDTO.getSurname())
+                    .email(customUserDTO.getEmail())
+                    .build(), avatarBytes);
             URI location = URI.create("https://localhost:8080/user/" + clientId);
             return ResponseEntity.created(location).build();
         } catch (CustomUserException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
+
     @Operation(summary = "Позволяет удалить пользователя")
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {

@@ -16,7 +16,7 @@ public class KafkaListenerMessage {
     public void handleMessage(RequestCardDto requestCarDto) {
         cardOrderService.createCard(
                 requestCarDto.getClientId());
-           //     requestCarDto.getCardProductId());
+        //     requestCarDto.getCardProductId());
     }
 
 //    @KafkaListener(id = "${DEPOSIT_LISTENER_ID}", topics = {"${NEW_DEPOSIT_TOPIC}"}, groupId = "${spring.kafka.consumer.group-id}")

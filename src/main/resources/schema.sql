@@ -5,7 +5,9 @@ create table IF NOT EXISTS tb_users (
                           id uuid default gen_random_uuid()primary key,
                           username varchar(255) not null,
                           surname varchar(255) not null,
-                          email varchar(255) not null unique
+                          email varchar(255) not null unique,
+                          avatar bytea,
+                          fileName varchar(255)
 );
 
 create table IF NOT EXISTS tb_cards (

@@ -17,9 +17,9 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardId;
-    @Column(name="card_number", unique = true)
+    @Column(name = "card_number", unique = true)
     private String cardNumber;
- //   private String accountNumber;
+    //   private String accountNumber;
     @Column(name = "payment_system", nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private PaymentSystem paymentSystem;
@@ -29,10 +29,6 @@ public class Card {
     private LocalDate expirationDate;
     @Column(name = "holder_name")
     private String holderName;
-
-
-
-
 
 
 }

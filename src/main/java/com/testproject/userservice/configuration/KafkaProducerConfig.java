@@ -1,4 +1,5 @@
 package com.testproject.userservice.configuration;
+
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,8 @@ public class KafkaProducerConfig {
         config.put(ProducerConfig.CLIENT_ID_CONFIG, kafkaProducerId);
         return new DefaultKafkaProducerFactory<>(config);
     }
-// объект KafkaTemplate<K, V> нужен, чтобы отправлять сообщения, 1 параметр–тип ключа, 2–тип сообщения
+
+    // объект KafkaTemplate<K, V> нужен, чтобы отправлять сообщения, 1 параметр–тип ключа, 2–тип сообщения
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate() {
         KafkaTemplate<String, Object> template = new KafkaTemplate<>(producerFactory());

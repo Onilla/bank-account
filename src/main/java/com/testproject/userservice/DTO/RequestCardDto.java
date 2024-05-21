@@ -21,12 +21,12 @@ import java.util.UUID;
 @JsonAutoDetect
 //@GroupSequence({CardDebitLimitDto.class, NotBlankPriority.class, PatternPriority.class})
 public class RequestCardDto {
-//    @Pattern(regexp = ConstantRegExp.UUID,
+    //    @Pattern(regexp = ConstantRegExp.UUID,
 //            message = ConstantRegExp.UUID_MESSAGE,
 //            groups = PatternPriority.class)
 //    @NotBlank(message = ConstantRegExp.CLIENT_ID_EMPTY,
 //            groups = NotBlankPriority.class)
     private UUID clientId;
 
- //   private CardIssueRequestDto cardProductId;
+    //   private CardIssueRequestDto cardProductId;
 }

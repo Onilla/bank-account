@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -28,12 +29,17 @@ public class CustomUser {
     @NotBlank
     @Size(min = 2, max = 30)
     private String surname;
-//    @NotNull
+    //    @NotNull
 //    @Size(min = 6)
 //    private String password;
     @Email
     @NotNull
     private String email;
+    @Lob
+    private byte[] avatar;
+
+    @NotNull
+    private String fileName;
 
 }
 

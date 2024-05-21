@@ -3,6 +3,7 @@ package com.testproject.userservice.util;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
+
 @Component
 public class Util {
 

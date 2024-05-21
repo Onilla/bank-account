@@ -9,9 +9,10 @@ import java.util.UUID;
 public interface CardOrderService {
     /**
      * handleRequestForeNewCard - заявка на открытие дебетовой карты
+     * <p>
+     * // * @param clientId            - идентификатор клиента
+     * //* @param cardIssueRequestDto - идентификатор дебетового карточного продукта
      *
-    // * @param clientId            - идентификатор клиента
-     //* @param cardIssueRequestDto - идентификатор дебетового карточного продукта
      * @return requestCardDto с параметрами clientId,cardIssueRequestDto
      */
 
@@ -19,9 +20,8 @@ public interface CardOrderService {
 
     /**
      * createCard - метод создания дебетовой карты с необходимыми полями
-     *
-  //@param clientIdn- идентификатор клиента
-
+     * <p>
+     * //@param clientIdn- идентификатор клиента
      */
     void createCard(UUID clientId);
 }
